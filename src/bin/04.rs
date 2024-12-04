@@ -52,10 +52,10 @@ impl Grid {
     }
 }
 
-impl Index<(usize, usize)> for Grid {
+impl Index<Point> for Grid {
     type Output = char;
 
-    fn index(&self, index: (usize, usize)) -> &Self::Output {
+    fn index(&self, index: Point) -> &Self::Output {
         &self.grid[index.1][index.0]
     }
 }
