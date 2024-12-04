@@ -2,6 +2,9 @@ use std::ops::Index;
 
 advent_of_code::solution!(4);
 
+type Point = (usize, usize);
+type Delta = (isize, isize);
+
 struct Grid {
     grid: Vec<Vec<char>>,
     width: usize,
@@ -22,7 +25,7 @@ impl Grid {
         }
     }
 
-    fn all_letter_locations(&self, letter: char) -> Vec<(usize, usize)> {
+    fn all_letter_locations(&self, letter: char) -> Vec<Point> {
         let mut entries = Vec::new();
 
         for y in 0..self.height {
@@ -36,7 +39,7 @@ impl Grid {
         entries
     }
 
-    fn get_letter_offset(&self, location: (usize, usize), offset: (isize, isize)) -> Option<(usize, usize)> {
+    fn get_letter_offset(&self, location: Point, offset: Delta) -> Option<Point> {
         if let Some(nx) = location.0.checked_add_signed(offset.0) {
             if let Some(ny) = location.1.checked_add_signed(offset.1) {
                 if nx < self.width && ny < self.height {
