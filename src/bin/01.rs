@@ -1,18 +1,13 @@
 use std::collections::HashMap;
 use nom::bytes::complete::tag;
-use nom::character::complete::digit1;
-use nom::combinator::{map_res, recognize};
 use nom::IResult;
 use nom::multi::separated_list0;
 use nom::sequence::separated_pair;
+use advent_of_code::number_u32;
 
 advent_of_code::solution!(1);
 
 fn parse(input: &str) -> IResult<&str, Vec<(u32, u32)>> {
-    fn number_u32(input : &str) -> IResult<&str, u32> {
-        map_res(recognize(digit1), str::parse)(input)
-    }
-
     separated_list0(tag("\n"), separated_pair(number_u32, tag("   "), number_u32))(input.trim())
 }
 

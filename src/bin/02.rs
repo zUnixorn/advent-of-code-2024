@@ -1,17 +1,12 @@
 use nom::bytes::complete::tag;
-use nom::character::complete::digit1;
-use nom::combinator::{map_res, recognize};
-use nom::IResult;
+use nom::{IResult, Parser};
 use nom::multi::separated_list0;
+use advent_of_code::{number_u32};
 
 advent_of_code::solution!(2);
 
 fn parse(input: &str) -> IResult<&str, Vec<Vec<i32>>> {
-    fn number_i32(input : &str) -> IResult<&str, i32> {
-        map_res(recognize(digit1), str::parse)(input)
-    }
-
-    separated_list0(tag("\n"), separated_list0(tag(" "), number_i32))(input.trim())
+    separated_list0(tag("\n"), separated_list0(tag(" "), number_u32.map(|n| n as i32)))(input.trim())
 }
 
 pub fn part_one(input: &str) -> Option<u32> {
