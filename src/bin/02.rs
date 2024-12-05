@@ -9,27 +9,27 @@ fn parse(input: &str) -> IResult<&str, Vec<Vec<i32>>> {
     separated_list0(tag("\n"), separated_list0(tag(" "), number_u32.map(|n| n as i32)))(input.trim())
 }
 
-pub fn part_one(input: &str) -> Option<u32> {
-    let (_, parsed) = parse(input).ok()?;
-    let mut sum = parsed.len() as u32;
+fn is_safe(line: &[i32]) -> bool {
+    let mut decreasing = None;
 
-    for line in parsed {
-        let mut decreasing = None;
+    for pair in line.windows(2) {
+        let difference = pair[1] - pair[0];
+        let is_decreasing = difference.is_negative();
+        let should_decrease = decreasing.get_or_insert(is_decreasing);
+        let in_range = (1..=3).contains(&difference.abs());
 
-        for pair in line.windows(2) {
-            let difference = pair[1] - pair[0];
-            let is_decreasing = difference.is_negative();
-            let should_decrease = decreasing.get_or_insert(is_decreasing);
-            let in_range = (1..=3).contains(&difference.abs());
-
-            if is_decreasing != *should_decrease || !in_range {
-                sum -= 1;
-                break;
-            }
+        if is_decreasing != *should_decrease || !in_range {
+            return false;
         }
     }
 
-    Some(sum)
+    true
+}
+
+pub fn part_one(input: &str) -> Option<u32> {
+    let (_, parsed) = parse(input).ok()?;
+
+    Some(parsed.iter().filter_map(|i| is_safe(i).then_some(())).count() as u32)
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
@@ -37,24 +37,14 @@ pub fn part_two(input: &str) -> Option<u32> {
     let mut sum = 0;
 
     for line in parsed {
-        'outer: for i in 0..line.len() {
-            let mut decreasing = None;
+        for i in 0..line.len() {
             let mut dampened_line = line.clone();
             dampened_line.remove(i);
 
-            for pair in dampened_line.windows(2) {
-                let difference = pair[1] - pair[0];
-                let is_decreasing = difference.is_negative();
-                let should_decrease = decreasing.get_or_insert(is_decreasing);
-                let in_range = (1..=3).contains(&difference.abs());
-
-                if is_decreasing != *should_decrease || !in_range {
-                    continue 'outer;
-                }
+            if is_safe(&dampened_line) {
+                sum += 1;
+                break;
             }
-
-            sum += 1;
-            break;
         }
     }
 
