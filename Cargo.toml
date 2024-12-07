@@ -30,3 +30,5 @@ tinyjson = "2.5.1"
 # Solution dependencies
 nom = "7.1"
 regex = "1.11"
+itertools = "0.13"
+bitvec = "1.0"

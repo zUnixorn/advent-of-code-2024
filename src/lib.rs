@@ -1,3 +1,4 @@
+use std::str::FromStr;
 use nom::character::complete::digit1;
 use nom::combinator::{map_res, recognize};
 use nom::IResult;
@@ -11,6 +12,6 @@ macro_rules! parse {
     };
 }
 
-pub fn number_u32(input : &str) -> IResult<&str, u32> {
+pub fn number<T: FromStr>(input : &str) -> IResult<&str, T> {
     map_res(recognize(digit1), str::parse)(input)
 }
