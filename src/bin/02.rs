@@ -1,12 +1,12 @@
 use nom::bytes::complete::tag;
-use nom::{IResult, Parser};
+use nom::IResult;
 use nom::multi::separated_list0;
-use advent_of_code::{number_u32};
+use advent_of_code::number;
 
 advent_of_code::solution!(2);
 
 fn parse(input: &str) -> IResult<&str, Vec<Vec<i32>>> {
-    separated_list0(tag("\n"), separated_list0(tag(" "), number_u32.map(|n| n as i32)))(input.trim())
+    separated_list0(tag("\n"), separated_list0(tag(" "), number))(input.trim())
 }
 
 fn is_safe(line: &[i32]) -> bool {

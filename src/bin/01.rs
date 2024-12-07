@@ -3,12 +3,12 @@ use nom::bytes::complete::tag;
 use nom::IResult;
 use nom::multi::separated_list0;
 use nom::sequence::separated_pair;
-use advent_of_code::number_u32;
+use advent_of_code::number;
 
 advent_of_code::solution!(1);
 
 fn parse(input: &str) -> IResult<&str, Vec<(u32, u32)>> {
-    separated_list0(tag("\n"), separated_pair(number_u32, tag("   "), number_u32))(input.trim())
+    separated_list0(tag("\n"), separated_pair(number, tag("   "), number))(input.trim())
 }
 
 pub fn part_one(input: &str) -> Option<u32> {

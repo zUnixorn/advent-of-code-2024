@@ -4,13 +4,13 @@ use nom::bytes::complete::tag;
 use nom::IResult;
 use nom::multi::separated_list0;
 use nom::sequence::separated_pair;
-use advent_of_code::number_u32;
+use advent_of_code::number;
 
 advent_of_code::solution!(5);
 
 fn parse(input: &str) -> IResult<&str, (HashMap<u32, HashSet<u32>>, Vec<Vec<u32>>)> {
-    let (rest, parsed_rules) = separated_list0(tag("\n"), separated_pair(number_u32, tag("|"), number_u32))(input.trim())?;
-    let (rest, updates) = separated_list0(tag("\n"), separated_list0(tag(","), number_u32))(rest.trim())?;
+    let (rest, parsed_rules) = separated_list0(tag("\n"), separated_pair(number, tag("|"), number))(input.trim())?;
+    let (rest, updates) = separated_list0(tag("\n"), separated_list0(tag(","), number))(rest.trim())?;
     let mut rules = HashMap::with_capacity(parsed_rules.len());
 
     for (key, value) in parsed_rules {
