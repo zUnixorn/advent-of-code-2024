@@ -29,6 +29,7 @@ dependencies = [
  "nom",
  "petgraph",
  "pico-args",
+ "rayon",
  "regex",
  "tinyjson",
 ]
